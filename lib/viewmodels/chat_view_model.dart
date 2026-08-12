@@ -29,7 +29,7 @@ class ChatViewModel extends ChangeNotifier {
     _aiService.dispose();
     super.dispose();
   }
-  
+
   void _loadMessages() {
     _messages = _dbHelper.getMessages();
     notifyListeners();

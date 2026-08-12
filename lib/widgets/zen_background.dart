@@ -74,7 +74,7 @@ class ZenShaderPainter extends CustomPainter {
 
     final paint = Paint()..shader = shader;
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
-    
+
     // Dispose the shader to immediately free native resources
     shader.dispose();
   }

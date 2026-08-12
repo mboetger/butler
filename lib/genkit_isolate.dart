@@ -29,7 +29,7 @@ class GenkitIsolate {
         port.close();
         return;
       }
-      
+
       if (message is List) {
         final SendPort replyPort = message[0];
         final GenkitRequest request = message[1];
