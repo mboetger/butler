@@ -11,6 +11,7 @@ This project is a macOS Flutter AI Chat Application.
 - **Target Platform**: macOS primarily. The network entitlements (`com.apple.security.network.client`) have been enabled in the Runner to allow Genkit network calls.
 
 ## Guidelines
+- **Formatting**: Always run `dart format .` after writing or modifying Dart code to ensure the codebase remains uniformly styled.
 - Always default to using MVVM (Model View ViewModel) when developing UI widgets.
 - Consider calling setState as an expensive operation that requires the flutter tree to re-render.  Calling setState should not be done in a tight loop. 
 - Setting state re-renders the corresponding widget and any subwidgets.  Attempt to ensure state is as isolated to "leaf" widgets as much as possible to minimize the rerender impact.

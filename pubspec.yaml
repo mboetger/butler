@@ -41,6 +41,7 @@ dependencies:
   genkit_google_genai: ^0.2.12
   ffi: ^2.2.0
   sqlcipher_flutter_libs: ^0.7.0+eol
+  flutter_ai_toolkit: ^1.0.0
 
 dev_dependencies:
   flutter_test:
