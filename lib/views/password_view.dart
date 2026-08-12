@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../viewmodels/password_view_model.dart';
 import '../widgets/zen_background.dart';
 import 'chat_view.dart';
@@ -35,9 +36,9 @@ class _PasswordScreenState extends State<PasswordScreen> {
   Future<void> _submit() async {
     final success = await _viewModel.submit(_passwordController.text);
     if (success && mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const ChatScreen()),
-      );
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (_) => const ChatScreen()));
     }
   }
 
@@ -53,7 +54,8 @@ class _PasswordScreenState extends State<PasswordScreen> {
               constraints: const BoxConstraints(maxWidth: 400),
               padding: const EdgeInsets.all(32.0),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.8),
+                color: Theme.of(context).colorScheme.surface
+                    .withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(24),
               ),
               child: _viewModel.isLoading && _passwordController.text.isEmpty
@@ -61,10 +63,16 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   : Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.lock, size: 64, color: Theme.of(context).colorScheme.primary),
+                        Icon(
+                          Icons.lock,
+                          size: 64,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                         const SizedBox(height: 24),
                         Text(
-                          _viewModel.dbExists ? 'Unlock Database' : 'Secure Database',
+                          _viewModel.dbExists
+                              ? 'Unlock Database'
+                              : 'Secure Database',
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         const SizedBox(height: 8),
@@ -100,9 +108,19 @@ class _PasswordScreenState extends State<PasswordScreen> {
                               ),
                             ),
                             onPressed: _viewModel.isLoading ? null : _submit,
-                            child: _viewModel.isLoading 
-                                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                                : Text(_viewModel.dbExists ? 'Unlock' : 'Create Database'),
+                            child: _viewModel.isLoading
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    _viewModel.dbExists
+                                        ? 'Unlock'
+                                        : 'Create Database',
+                                  ),
                           ),
                         ),
                       ],

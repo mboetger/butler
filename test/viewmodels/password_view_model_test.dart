@@ -31,9 +31,9 @@ void main() {
 
     test('submit with correct password sets success state', () async {
       when(() => mockDbHelper.init(any())).thenAnswer((_) async => true);
-      
+
       final success = await viewModel.submit('correct_password');
-      
+
       expect(success, isTrue);
       expect(viewModel.isLoading, isTrue);
       expect(viewModel.error, isNull);
@@ -41,9 +41,9 @@ void main() {
 
     test('submit with incorrect password sets error state', () async {
       when(() => mockDbHelper.init(any())).thenAnswer((_) async => false);
-      
+
       final success = await viewModel.submit('wrong_password');
-      
+
       expect(success, isFalse);
       expect(viewModel.isLoading, isFalse);
       expect(viewModel.error, 'Incorrect password. Please try again.');

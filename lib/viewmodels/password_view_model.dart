@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import '../db.dart';
 
 class PasswordViewModel extends ChangeNotifier {
@@ -12,7 +13,8 @@ class PasswordViewModel extends ChangeNotifier {
   bool get dbExists => _dbExists;
   String? get error => _error;
 
-  PasswordViewModel({DatabaseHelper? dbHelper}) : _dbHelper = dbHelper ?? DatabaseHelper() {
+  PasswordViewModel({DatabaseHelper? dbHelper})
+    : _dbHelper = dbHelper ?? DatabaseHelper() {
     _checkDb();
   }
 

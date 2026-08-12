@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -9,7 +10,8 @@ class ZenBackground extends StatefulWidget {
   State<ZenBackground> createState() => _ZenBackgroundState();
 }
 
-class _ZenBackgroundState extends State<ZenBackground> with SingleTickerProviderStateMixin {
+class _ZenBackgroundState extends State<ZenBackground>
+    with SingleTickerProviderStateMixin {
   late Ticker _ticker;
   double _time = 0.0;
   ui.FragmentProgram? _program;
@@ -28,7 +30,9 @@ class _ZenBackgroundState extends State<ZenBackground> with SingleTickerProvider
 
   Future<void> _loadShader() async {
     try {
-      final program = await ui.FragmentProgram.fromAsset('shaders/zen_glow.frag');
+      final program = await ui.FragmentProgram.fromAsset(
+        'shaders/zen_glow.frag',
+      );
       setState(() {
         _program = program;
       });

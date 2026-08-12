@@ -1,9 +1,13 @@
 import 'dart:isolate';
+
 import '../genkit_isolate.dart';
 
 abstract class AiService {
   Future<void> init();
-  Future<Map<String, dynamic>> sendMessage(String prompt, List<Map<String, dynamic>> history);
+  Future<Map<String, dynamic>> sendMessage(
+    String prompt,
+    List<Map<String, dynamic>> history,
+  );
 }
 
 class GenkitAiService implements AiService {
@@ -15,8 +19,12 @@ class GenkitAiService implements AiService {
   }
 
   @override
-  Future<Map<String, dynamic>> sendMessage(String prompt, List<Map<String, dynamic>> history) async {
-    if (_genkitPort == null) return {'success': false, 'error': 'Not initialized'};
+  Future<Map<String, dynamic>> sendMessage(
+    String prompt,
+    List<Map<String, dynamic>> history,
+  ) async {
+    if (_genkitPort == null)
+      return {'success': false, 'error': 'Not initialized'};
     final responsePort = ReceivePort();
     _genkitPort!.send([responsePort.sendPort, GenkitRequest(prompt, history)]);
     return await responsePort.first as Map<String, dynamic>;

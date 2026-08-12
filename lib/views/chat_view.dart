@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../viewmodels/chat_view_model.dart';
 import '../widgets/zen_background.dart';
 
@@ -20,7 +21,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _viewModel = ChatViewModel();
     _viewModel.addListener(_onViewModelChange);
   }
-  
+
   @override
   void dispose() {
     _viewModel.removeListener(_onViewModelChange);
@@ -76,18 +77,26 @@ class _ChatScreenState extends State<ChatScreen> {
                     final message = _viewModel.messages[index];
                     final isUser = message['role'] == 'user';
                     final isSystem = message['role'] == 'system';
-                    
+
                     return Align(
-                      alignment: isUser ? Alignment.centerRight : (isSystem ? Alignment.center : Alignment.centerLeft),
+                      alignment: isUser
+                          ? Alignment.centerRight
+                          : (isSystem
+                                ? Alignment.center
+                                : Alignment.centerLeft),
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 4.0),
                         padding: const EdgeInsets.all(12.0),
                         decoration: BoxDecoration(
-                          color: isUser 
-                              ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.8) 
-                              : (isSystem 
-                                  ? Colors.red.withValues(alpha: 0.2) 
-                                  : Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.8)),
+                          color: isUser
+                              ? Theme.of(context).colorScheme.primaryContainer
+                                    .withValues(alpha: 0.8)
+                              : (isSystem
+                                    ? Colors.red.withValues(alpha: 0.2)
+                                    : Theme.of(context)
+                                          .colorScheme
+                                          .surfaceContainerHighest
+                                          .withValues(alpha: 0.8)),
                           borderRadius: BorderRadius.circular(16.0),
                         ),
                         constraints: BoxConstraints(
@@ -96,11 +105,15 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: Text(
                           message['content'] as String,
                           style: TextStyle(
-                            color: isUser 
-                                ? Theme.of(context).colorScheme.onPrimaryContainer 
-                                : (isSystem 
-                                    ? Colors.redAccent 
-                                    : Theme.of(context).colorScheme.onSurfaceVariant),
+                            color: isUser
+                                ? Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer
+                                : (isSystem
+                                      ? Colors.redAccent
+                                      : Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant),
                           ),
                         ),
                       ),
@@ -124,12 +137,16 @@ class _ChatScreenState extends State<ChatScreen> {
                           decoration: InputDecoration(
                             hintText: 'Type a message...',
                             filled: true,
-                            fillColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
+                            fillColor: Theme.of(context).colorScheme.surface
+                                .withValues(alpha: 0.5),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(24.0),
                               borderSide: BorderSide.none,
                             ),
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 12.0,
+                            ),
                           ),
                           onSubmitted: (_) => _sendMessage(),
                         ),

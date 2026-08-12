@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqlite3/sqlite3.dart';
@@ -38,13 +39,13 @@ class DatabaseHelper {
 
     // Enable WAL mode for better performance and concurrency
     db.execute('PRAGMA journal_mode = WAL;');
-    
+
     // Optional: Enable foreign keys if you add relational tables later
     db.execute('PRAGMA foreign_keys = ON;');
 
     // Handle migrations
     _runMigrations();
-    
+
     return true;
   }
 
@@ -65,7 +66,7 @@ class DatabaseHelper {
       ''');
       db.execute('PRAGMA user_version = 1;');
     }
-    
+
     // Future migrations would go here, e.g.:
     // if (currentVersion < 2) { ... }
   }
@@ -75,13 +76,17 @@ class DatabaseHelper {
   }
 
   void insertMessage(String role, String content) {
-    final stmt = db.prepare('INSERT INTO messages (role, content, timestamp) VALUES (?, ?, ?)');
+    final stmt = db.prepare(
+      'INSERT INTO messages (role, content, timestamp) VALUES (?, ?, ?)',
+    );
     stmt.execute([role, content, DateTime.now().millisecondsSinceEpoch]);
     stmt.close();
   }
 
   List<Map<String, dynamic>> getMessages() {
-    final ResultSet resultSet = db.select('SELECT * FROM messages ORDER BY timestamp ASC');
+    final ResultSet resultSet = db.select(
+      'SELECT * FROM messages ORDER BY timestamp ASC',
+    );
     return resultSet.map((row) {
       return {
         'id': row['id'],
