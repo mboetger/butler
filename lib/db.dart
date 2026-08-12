@@ -32,7 +32,7 @@ class DatabaseHelper {
       db.select('SELECT count(*) FROM sqlite_schema;');
     } catch (e) {
       // Wrong password or corrupted database
-      db.dispose();
+      db.close();
       return false;
     }
 
@@ -71,7 +71,7 @@ class DatabaseHelper {
   }
 
   void dispose() {
-    db.dispose();
+    db.close();
   }
 
   void insertMessage(String role, String content) {
