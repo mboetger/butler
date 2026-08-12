@@ -14,7 +14,8 @@ class PasswordScreen extends StatefulWidget {
 
 class _PasswordScreenState extends State<PasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
-  late final PasswordViewModel _viewModel = widget.viewModel ?? PasswordViewModel();
+  late final PasswordViewModel _viewModel =
+      widget.viewModel ?? PasswordViewModel();
 
   @override
   void initState() {
