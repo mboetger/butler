@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:flutter_genui_kit/flutter_genui_kit.dart';
 
 import '../providers/genkit_llm_provider.dart';
 import '../widgets/zen_background.dart';
+
+class _DummyGenUiAdapter implements GenUiLlmAdapter {
+  @override
+  Future<GenUiCompletion> generate({
+    required String prompt,
+    GenUiDocument? currentDocument,
+    Map<String, Object?> context = const {},
+  }) async {
+    return const GenUiCompletion(rawPayload: '{}');
+  }
+}
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -26,6 +39,49 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
+  Widget _buildResponse(BuildContext context, String text) {
+    // Try parsing the entire text first
+    var parsed = const GenUiSchemaParser().parse(text);
+    if (parsed is GenUiSuccess<GenUiParsedDocument>) {
+      return GenUiBuilder(
+        controller: GenUiController(
+          adapter: _DummyGenUiAdapter(),
+          initialDocument: parsed.value.document,
+        ),
+      );
+    }
+
+    // Extract json from markdown block if any
+    final jsonRegex = RegExp(r'```(?:json)?\n(.*?)```', dotAll: true);
+    final match = jsonRegex.firstMatch(text);
+    if (match != null) {
+      final jsonStr = match.group(1);
+      if (jsonStr != null && jsonStr.trim().isNotEmpty) {
+        parsed = const GenUiSchemaParser().parse(jsonStr.trim());
+        if (parsed is GenUiSuccess<GenUiParsedDocument>) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MarkdownBody(
+                data: text.replaceAll(match.group(0)!, '').trim(),
+                selectable: false,
+              ),
+              const SizedBox(height: 16),
+              GenUiBuilder(
+                controller: GenUiController(
+                  adapter: _DummyGenUiAdapter(),
+                  initialDocument: parsed.value.document,
+                ),
+              ),
+            ],
+          );
+        }
+      }
+    }
+
+    return MarkdownBody(data: text, selectable: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -40,6 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           body: LlmChatView(
             provider: _provider,
+            responseBuilder: _buildResponse,
             style: LlmChatViewStyle(
               backgroundColor: Colors.transparent,
               userMessageStyle: UserMessageStyle(

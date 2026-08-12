@@ -42,6 +42,8 @@ dependencies:
   ffi: ^2.2.0
   sqlcipher_flutter_libs: ^0.7.0+eol
   flutter_ai_toolkit: ^1.0.0
+  flutter_genui_kit: ^1.0.1
+  flutter_markdown_plus: ^1.0.12
 
 dev_dependencies:
   flutter_test:

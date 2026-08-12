@@ -358,6 +358,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.2"
+  flutter_genui_kit:
+    dependency: "direct main"
+    description:
+      name: flutter_genui_kit
+      sha256: "7dc74ec8764ec4f4c0404b0254017620f5e07962480ea50dc682c60ff8b84917"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -367,7 +375,7 @@ packages:
     source: hosted
     version: "6.0.0"
   flutter_markdown_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_markdown_plus
       sha256: fce641d6c2106cc495de1cd603f97a4f9d615a97a64011928ded380dbdade935
