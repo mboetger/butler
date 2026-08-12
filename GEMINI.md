@@ -21,3 +21,8 @@ This project is a macOS Flutter AI Chat Application.
 - The design of the app should be minimal and zen-like. Dark, rich colors. Dark background with a smooth simple lightweight frosted glass for foreground UI elements.
 - Use the State Pattern whenever dealing with complex state. Prefer this abstraction to making large, complex conditional statements.
 - Prefer to use ChangeNotifier and ValueNotifier when state needs to be shared with the UI.
+
+## Golden Tests
+- When adding or modifying UI, ensure you write or update **Golden Tests** to prevent visual regressions.
+- Generate or update master golden images locally by running `flutter test --update-goldens`.
+- Note: Golden tests are highly sensitive to OS font rendering. Because this is primarily a macOS application, CI workflows (`flutter_ci.yml`) are configured to run on `macos-latest` to ensure your locally generated macOS golden files match the CI environment.

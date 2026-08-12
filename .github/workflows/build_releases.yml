@@ -1,0 +1,76 @@
+name: Build Desktop Releases
+
+on:
+  # Trigger this manually from the GitHub Actions UI
+  workflow_dispatch: 
+  
+  # Or automatically when you push a version tag (e.g., git tag v1.0.0 && git push --tags)
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build for ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            target: windows
+            build_cmd: flutter build windows
+            artifact_name: butler-windows
+            artifact_path: build/windows/x64/runner/Release/
+          - os: macos-latest
+            target: macos
+            build_cmd: flutter build macos
+            artifact_name: butler-macos
+            # macOS artifacts require special zipping to preserve .app permissions
+          - os: ubuntu-latest
+            target: linux
+            build_cmd: flutter build linux
+            artifact_name: butler-linux
+            artifact_path: build/linux/x64/release/bundle/
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Linux requires specific build tools for Flutter desktop
+      - name: Install Linux dependencies
+        if: matrix.target == 'linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y clang cmake git ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'master'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Application
+        run: ${{ matrix.build_cmd }}
+
+      # macOS .app folders lose symlinks/permissions if uploaded raw. We must zip it first.
+      - name: Zip macOS App
+        if: matrix.target == 'macos'
+        run: |
+          cd build/macos/Build/Products/Release
+          zip -r butler-macos.zip butler.app
+
+      - name: Upload macOS Artifact
+        if: matrix.target == 'macos'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: build/macos/Build/Products/Release/butler-macos.zip
+
+      - name: Upload Windows/Linux Artifact
+        if: matrix.target != 'macos'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_path }}

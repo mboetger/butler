@@ -5,7 +5,8 @@ import '../widgets/zen_background.dart';
 import 'chat_view.dart';
 
 class PasswordScreen extends StatefulWidget {
-  const PasswordScreen({super.key});
+  final PasswordViewModel? viewModel;
+  const PasswordScreen({super.key, this.viewModel});
 
   @override
   State<PasswordScreen> createState() => _PasswordScreenState();
@@ -13,7 +14,7 @@ class PasswordScreen extends StatefulWidget {
 
 class _PasswordScreenState extends State<PasswordScreen> {
   final TextEditingController _passwordController = TextEditingController();
-  final PasswordViewModel _viewModel = PasswordViewModel();
+  late final PasswordViewModel _viewModel = widget.viewModel ?? PasswordViewModel();
 
   @override
   void initState() {
