@@ -25,6 +25,11 @@ class GenkitIsolate {
     final ai = Genkit(plugins: [googleAI()]);
 
     port.listen((message) async {
+      if (message == 'close') {
+        port.close();
+        return;
+      }
+      
       if (message is List) {
         final SendPort replyPort = message[0];
         final GenkitRequest request = message[1];

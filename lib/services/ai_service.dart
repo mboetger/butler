@@ -8,6 +8,7 @@ abstract class AiService {
     String prompt,
     List<Map<String, dynamic>> history,
   );
+  void dispose();
 }
 
 class GenkitAiService implements AiService {
@@ -29,5 +30,10 @@ class GenkitAiService implements AiService {
     final responsePort = ReceivePort();
     _genkitPort!.send([responsePort.sendPort, GenkitRequest(prompt, history)]);
     return await responsePort.first as Map<String, dynamic>;
+  }
+
+  @override
+  void dispose() {
+    _genkitPort?.send('close');
   }
 }

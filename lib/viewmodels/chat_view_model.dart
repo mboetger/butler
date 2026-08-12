@@ -24,6 +24,12 @@ class ChatViewModel extends ChangeNotifier {
     await _aiService.init();
   }
 
+  @override
+  void dispose() {
+    _aiService.dispose();
+    super.dispose();
+  }
+  
   void _loadMessages() {
     _messages = _dbHelper.getMessages();
     notifyListeners();
