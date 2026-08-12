@@ -23,8 +23,9 @@ class GenkitAiService implements AiService {
     String prompt,
     List<Map<String, dynamic>> history,
   ) async {
-    if (_genkitPort == null)
+    if (_genkitPort == null) {
       return {'success': false, 'error': 'Not initialized'};
+    }
     final responsePort = ReceivePort();
     _genkitPort!.send([responsePort.sendPort, GenkitRequest(prompt, history)]);
     return await responsePort.first as Map<String, dynamic>;
